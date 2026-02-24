@@ -10,8 +10,8 @@ A clean, minimal web app for browsing 45 FODMAP-friendly, spicy recipes from aro
 - All recipes are low-FODMAP (no garlic/onion, ginger-forward)
 - Vegan and non-vegan options
 - Spice levels: mild → very hot
-- Filter by ingredient and cuisine
 - Expandable/collapsible ingredient and instruction sections
+- Sidebar navigation through all recipes
 
 ## Recipes Included
 
