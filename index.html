@@ -39,6 +39,9 @@
         .search-input { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; outline: none; transition: border-color 0.2s; }
         .search-input::placeholder { color: #64748b; }
         .search-input:focus { border-color: #f97316; }
+        .cuisine-select { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 14px; outline: none; transition: border-color 0.2s; margin-top: 8px; appearance: none; cursor: pointer; }
+        .cuisine-select:focus { border-color: #f97316; }
+        .cuisine-select option { background: #1e293b; }
         .recipes-list { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
         .recipe-item { padding: 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s; border-left: 4px solid #334155; text-align: left; background: transparent; border: none; color: inherit; font-family: inherit; font-size: 14px; }
         .recipe-item:hover { background: #1e293b; }
@@ -54,6 +57,20 @@
                 <div class="sidebar-title">FODMAP Recipes</div>
                 <div class="sidebar-count" id="recipeCount">Loading...</div>
                 <input type="text" class="search-input" id="searchInput" placeholder="Search recipes..." oninput="filterRecipes()">
+                <select class="cuisine-select" id="cuisineSelect" onchange="filterRecipes()">
+                    <option value="">All cuisines</option>
+                    <option value="Asian">Asian</option>
+                    <option value="Caribbean">Caribbean</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Guam">Guam</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Indonesian">Indonesian</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Korean">Korean</option>
+                    <option value="Mediterranean">Mediterranean</option>
+                    <option value="Thai">Thai</option>
+                </select>
             </div>
             <div class="recipes-list" id="recipesList"></div>
         </div>
@@ -121,11 +138,15 @@
 
         function filterRecipes() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = recipes.filter(recipe =>
-                recipe.title.toLowerCase().includes(searchTerm) ||
-                recipe.cuisine.toLowerCase().includes(searchTerm) ||
-                recipe.ingredients.some(ing => ing.name.toLowerCase().includes(searchTerm))
-            );
+            const cuisineFilter = document.getElementById('cuisineSelect').value;
+            const filtered = recipes.filter(recipe => {
+                const matchesSearch = !searchTerm ||
+                    recipe.title.toLowerCase().includes(searchTerm) ||
+                    recipe.cuisine.toLowerCase().includes(searchTerm) ||
+                    recipe.ingredients.some(ing => ing.name.toLowerCase().includes(searchTerm));
+                const matchesCuisine = !cuisineFilter || recipe.cuisine === cuisineFilter;
+                return matchesSearch && matchesCuisine;
+            });
 
             document.getElementById('recipeCount').textContent = `${filtered.length} of ${recipes.length} recipes`;
 
